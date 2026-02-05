@@ -8,7 +8,7 @@ from fastapi.responses import JSONResponse
 
 from app.config import get_settings
 from app.database import close_db, init_db
-from app.routers import auth, qml, synthesis, plugins, collaboration, ml_prediction, api_gateway
+from app.routers import auth, qml, synthesis, plugins, collaboration, ml_prediction, api_gateway, websocket_router, ml_training_router, graphql_router
 
 settings = get_settings()
 
@@ -76,6 +76,9 @@ app.include_router(plugins.router, prefix=settings.api_prefix)
 app.include_router(collaboration.router, prefix=settings.api_prefix)
 app.include_router(ml_prediction.router, prefix=settings.api_prefix)
 app.include_router(api_gateway.router, prefix=settings.api_prefix)
+app.include_router(websocket_router.router)  # WebSocket router without prefix
+app.include_router(ml_training_router.router, prefix=settings.api_prefix)
+app.include_router(graphql_router.router)  # GraphQL router without prefix
 
 
 # Exception handlers
